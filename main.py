@@ -12,7 +12,7 @@ openai.organization = config["OPENAI_ORG_ID"]
 def get_embedding(text):
     redis_client = RedisClient(host=config["REDIS_HOST"], port=config["REDIS_PORT"])
     key = text
-    if redis_client.get_key(key) is None:
+    if not redis_client.exists(key):
         time.sleep(1)
         print("creating embedding for: " + text)
         response = openai.Embedding.create(
@@ -20,9 +20,9 @@ def get_embedding(text):
             model = "text-embedding-ada-002"
         )
         embeddings = response['data'][0]['embedding']
-        redis_client.set_key(key, embeddings)
+        redis_client.set(key, embeddings)
     else:
-        embeddings = redis_client.get_key(key)
+        embeddings = redis_client.get(key)
     return embeddings
 
 # calculate the cosine similarity between two embeddings
@@ -72,5 +72,6 @@ text_list = ['Los felinos dicen', 'Los caninos dicen',\
 
 text = 'meaw'
 
-print(most_similar(text, text_list))
+print(f'El texto {text} es similar a: {most_similar(text, text_list)}')
+
 
