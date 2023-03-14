@@ -66,7 +66,7 @@ def most_similar_with_similarity_threshold(text, text_list, threshold):
         return None, max_similarity
     return text_list[similarities.index(max_similarity)], max_similarity
 
-
+# BÚSQUEDAS INTELIGENTES CON OPENAI
 text_list = ['Los felinos dicen', 'Los caninos dicen',\
              'Los bovinos dicen', 'Tengo un terreno en ayacucho', 'Tengo una casa en Piura']
 
